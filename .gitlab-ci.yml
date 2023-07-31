@@ -30,7 +30,7 @@ robot-run-job: # This job runs in the test stage.
     artifacts:
         when: always
         paths:
-            - report.html  
+            - Ex02-CopyString/report.html  
         
 lint-test-job: # This job also runs in the test stage.
     stage: test # Run at the same time as unit-test-job
