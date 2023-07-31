@@ -1,3 +1,5 @@
+image: "luckycometdaft/emcigccarm:v2"
+
 stages: # List of stages for jobs and their order of execution
     - build
     - test
@@ -8,6 +10,7 @@ build-job: # This job runs the build stage first
     script:
         - echo "Compiling the code..."
         - echo "Compile complete."
+        - arm-none-eabi-gcc -v
         
 unit-test-job: # This job runs in the test stage.
     stage: test # Runs if build stage completes successfully.
