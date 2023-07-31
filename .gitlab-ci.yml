@@ -26,7 +26,7 @@ robot-run-job: # This job runs in the test stage.
     script:
         - cd Ex02-CopyString
         - make
-        - renode-test Renode-Common.robot
+        - renode-test ASM-CopyString.robot
     artifacts:
         when: always
         paths:
