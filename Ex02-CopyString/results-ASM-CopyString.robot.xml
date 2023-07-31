@@ -1,0 +1,1518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 4.0.1 (Python 3.6.9 on linux)" generated="20230731 10:20:49.361" rpa="false" schemaversion="2">
+<suite id="s1" name="ASM-CopyString" source="/home/app/Program_Ref/stm32f1-assembly/Ex02-CopyString/ASM-CopyString.robot">
+<kw name="Setup" library="renode-keywords" type="SETUP">
+<msg timestamp="20230731 10:20:49.552" level="TRACE">Arguments: [  ]</msg>
+<kw name="Evaluate" library="BuiltIn">
+<var>${SYSTEM}</var>
+<arg>platform.system()</arg>
+<arg>modules=platform</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20230731 10:20:49.553" level="TRACE">Arguments: [ 'platform.system()' | modules='platform' ]</msg>
+<msg timestamp="20230731 10:20:49.573" level="TRACE">Return: 'Linux'</msg>
+<msg timestamp="20230731 10:20:49.574" level="INFO">${SYSTEM} = Linux</msg>
+<status status="PASS" starttime="20230731 10:20:49.552" endtime="20230731 10:20:49.574"/>
+</kw>
+<kw name="Set Variable If" library="BuiltIn">
+<var>${CONFIGURATION}</var>
+<arg>not ${SKIP_RUNNING_SERVER} and ${SERVER_REMOTE_DEBUG}</arg>
+<arg>Debug</arg>
+<arg>${CONFIGURATION}</arg>
+<doc>Sets variable based on the given condition.</doc>
+<msg timestamp="20230731 10:20:49.576" level="TRACE">Arguments: [ 'not True and False' | 'Debug' | '${CONFIGURATION}' ]</msg>
+<msg timestamp="20230731 10:20:49.576" level="TRACE">Return: 'Release'</msg>
+<msg timestamp="20230731 10:20:49.576" level="INFO">${CONFIGURATION} = Release</msg>
+<status status="PASS" starttime="20230731 10:20:49.575" endtime="20230731 10:20:49.576"/>
+</kw>
+<kw name="Create List" library="BuiltIn">
+<var>@{PARAMS}</var>
+<arg>--robot-server-port</arg>
+<arg>${PORT_NUMBER}</arg>
+<arg>--hide-log</arg>
+<doc>Returns a list containing given items.</doc>
+<msg timestamp="20230731 10:20:49.577" level="TRACE">Arguments: [ '--robot-server-port' | '9999' | '--hide-log' ]</msg>
+<msg timestamp="20230731 10:20:49.577" level="TRACE">Return: ['--robot-server-port', '9999', '--hide-log']</msg>
+<msg timestamp="20230731 10:20:49.578" level="INFO">@{PARAMS} = [ --robot-server-port | 9999 | --hide-log ]</msg>
+<status status="PASS" starttime="20230731 10:20:49.577" endtime="20230731 10:20:49.578"/>
+</kw>
+<if>
+<branch type="IF" condition="${DISABLE_XWT}">
+<kw name="Insert Into List" library="Collections">
+<arg>${PARAMS}</arg>
+<arg>0</arg>
+<arg>--disable-xwt</arg>
+<doc>Inserts ``value`` into ``list`` to the position specified with ``index``.</doc>
+<status status="NOT RUN" starttime="20230731 10:20:49.578" endtime="20230731 10:20:49.578"/>
+</kw>
+<status status="NOT RUN" starttime="20230731 10:20:49.578" endtime="20230731 10:20:49.578"/>
+</branch>
+<status status="PASS" starttime="20230731 10:20:49.578" endtime="20230731 10:20:49.578"/>
+</if>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER}">
+<kw name="File Should Exist" library="OperatingSystem">
+<arg>${DIRECTORY}/${BINARY_NAME}</arg>
+<arg>msg=Robot Framework remote server binary not found (${DIRECTORY}/${BINARY_NAME}). Did you forget to build it in ${CONFIGURATION} configuration?</arg>
+<doc>Fails unless the given ``path`` points to an existing file.</doc>
+<status status="NOT RUN" starttime="20230731 10:20:49.579" endtime="20230731 10:20:49.579"/>
+</kw>
+<status status="NOT RUN" starttime="20230731 10:20:49.579" endtime="20230731 10:20:49.579"/>
+</branch>
+<status status="PASS" starttime="20230731 10:20:49.578" endtime="20230731 10:20:49.579"/>
+</if>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER} and not ${SERVER_REMOTE_DEBUG} and not '${SYSTEM}' == 'Windows' and not ${NET_PLATFORM}">
+<kw name="Start Process" library="Process">
+<arg>mono</arg>
+<arg>${BINARY_NAME}</arg>
+<arg>@{PARAMS}</arg>
+<arg>cwd=${DIRECTORY}</arg>
+<doc>Starts a new process on background.</doc>
+<status status="NOT RUN" starttime="20230731 10:20:49.580" endtime="20230731 10:20:49.580"/>
+</kw>
+<status status="NOT RUN" starttime="20230731 10:20:49.580" endtime="20230731 10:20:49.580"/>
+</branch>
+<status status="PASS" starttime="20230731 10:20:49.579" endtime="20230731 10:20:49.580"/>
+</if>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER} and not ${SERVER_REMOTE_DEBUG} and '${SYSTEM}' == 'Windows'">
+<kw name="Start Process" library="Process">
+<arg>${BINARY_NAME}</arg>
+<arg>@{PARAMS}</arg>
+<arg>cwd=${DIRECTORY}</arg>
+<arg>shell=true</arg>
+<doc>Starts a new process on background.</doc>
+<status status="NOT RUN" starttime="20230731 10:20:49.581" endtime="20230731 10:20:49.581"/>
+</kw>
+<status status="NOT RUN" starttime="20230731 10:20:49.580" endtime="20230731 10:20:49.581"/>
+</branch>
+<status status="PASS" starttime="20230731 10:20:49.580" endtime="20230731 10:20:49.581"/>
+</if>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER} and not ${SERVER_REMOTE_DEBUG} and ${NET_PLATFORM}">
+<kw name="Start Process" library="Process">
+<arg>dotnet ${BINARY_NAME}</arg>
+<arg>@{PARAMS}</arg>
+<arg>cwd=${DIRECTORY}</arg>
+<arg>shell=true</arg>
+<doc>Starts a new process on background.</doc>
+<status status="NOT RUN" starttime="20230731 10:20:49.581" endtime="20230731 10:20:49.582"/>
+</kw>
+<status status="NOT RUN" starttime="20230731 10:20:49.581" endtime="20230731 10:20:49.582"/>
+</branch>
+<status status="PASS" starttime="20230731 10:20:49.581" endtime="20230731 10:20:49.582"/>
+</if>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER} and ${SERVER_REMOTE_DEBUG} and not '${SYSTEM}' == 'Windows' and not ${NET_PLATFORM}">
+<kw name="Start Process" library="Process">
+<arg>mono</arg>
+<arg>--debug</arg>
+<arg>--debugger-agent\=transport\=dt_socket,address\=0.0.0.0:${SERVER_REMOTE_PORT},server\=y,suspend\=${SERVER_REMOTE_SUSPEND}</arg>
+<arg>${BINARY_NAME}</arg>
+<arg>@{PARAMS}</arg>
+<arg>cwd=${DIRECTORY}</arg>
+<doc>Starts a new process on background.</doc>
+<status status="NOT RUN" starttime="20230731 10:20:49.582" endtime="20230731 10:20:49.583"/>
+</kw>
+<status status="NOT RUN" starttime="20230731 10:20:49.582" endtime="20230731 10:20:49.583"/>
+</branch>
+<status status="PASS" starttime="20230731 10:20:49.582" endtime="20230731 10:20:49.583"/>
+</if>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER} and ${SERVER_REMOTE_DEBUG} and '${SYSTEM}' == 'Windows'">
+<kw name="Fatal Error" library="BuiltIn">
+<arg>Windows doesn't support server remote debug option.</arg>
+<doc>Stops the whole test execution.</doc>
+<status status="NOT RUN" starttime="20230731 10:20:49.583" endtime="20230731 10:20:49.583"/>
+</kw>
+<status status="NOT RUN" starttime="20230731 10:20:49.583" endtime="20230731 10:20:49.584"/>
+</branch>
+<status status="PASS" starttime="20230731 10:20:49.583" endtime="20230731 10:20:49.584"/>
+</if>
+<if>
+<branch type="IF" condition="not '${SYSTEM}' == 'Windows'">
+<kw name="Wait Until Keyword Succeeds" library="BuiltIn">
+<arg>60s</arg>
+<arg>1s</arg>
+<arg>Import Library</arg>
+<arg>Remote</arg>
+<arg>http://127.0.0.1:${PORT_NUMBER}/</arg>
+<doc>Runs the specified keyword and retries if it fails.</doc>
+<msg timestamp="20230731 10:20:49.584" level="TRACE">Arguments: [ '60s' | '1s' | 'Import Library' | 'Remote' | 'http://127.0.0.1:${PORT_NUMBER}/' ]</msg>
+<kw name="Import Library" library="BuiltIn">
+<arg>Remote</arg>
+<arg>http://127.0.0.1:${PORT_NUMBER}/</arg>
+<doc>Imports a library with the given name and optional arguments.</doc>
+<msg timestamp="20230731 10:20:49.585" level="TRACE">Arguments: [ 'Remote' | 'http://127.0.0.1:${PORT_NUMBER}/' ]</msg>
+<msg timestamp="20230731 10:20:49.599" level="FAIL">Getting keyword names from library 'Remote' failed: Calling dynamic method 'get_keyword_names' failed: Connecting remote server at http://127.0.0.1:9999/ failed: [Errno 111] Connection refused</msg>
+<msg timestamp="20230731 10:20:49.599" level="DEBUG">Traceback (most recent call last):
+  None</msg>
+<status status="FAIL" starttime="20230731 10:20:49.585" endtime="20230731 10:20:49.600"/>
+</kw>
+<kw name="Import Library" library="BuiltIn">
+<arg>Remote</arg>
+<arg>http://127.0.0.1:${PORT_NUMBER}/</arg>
+<doc>Imports a library with the given name and optional arguments.</doc>
+<msg timestamp="20230731 10:20:50.601" level="TRACE">Arguments: [ 'Remote' | 'http://127.0.0.1:${PORT_NUMBER}/' ]</msg>
+<msg timestamp="20230731 10:20:50.603" level="FAIL">Getting keyword names from library 'Remote' failed: Calling dynamic method 'get_keyword_names' failed: Connecting remote server at http://127.0.0.1:9999/ failed: [Errno 111] Connection refused</msg>
+<msg timestamp="20230731 10:20:50.604" level="DEBUG">Traceback (most recent call last):
+  None</msg>
+<status status="FAIL" starttime="20230731 10:20:50.600" endtime="20230731 10:20:50.604"/>
+</kw>
+<kw name="Import Library" library="BuiltIn">
+<arg>Remote</arg>
+<arg>http://127.0.0.1:${PORT_NUMBER}/</arg>
+<doc>Imports a library with the given name and optional arguments.</doc>
+<msg timestamp="20230731 10:20:51.605" level="TRACE">Arguments: [ 'Remote' | 'http://127.0.0.1:${PORT_NUMBER}/' ]</msg>
+<msg timestamp="20230731 10:20:51.608" level="FAIL">Getting keyword names from library 'Remote' failed: Calling dynamic method 'get_keyword_names' failed: Connecting remote server at http://127.0.0.1:9999/ failed: [Errno 111] Connection refused</msg>
+<msg timestamp="20230731 10:20:51.608" level="DEBUG">Traceback (most recent call last):
+  None</msg>
+<status status="FAIL" starttime="20230731 10:20:51.605" endtime="20230731 10:20:51.608"/>
+</kw>
+<kw name="Import Library" library="BuiltIn">
+<arg>Remote</arg>
+<arg>http://127.0.0.1:${PORT_NUMBER}/</arg>
+<doc>Imports a library with the given name and optional arguments.</doc>
+<msg timestamp="20230731 10:20:52.609" level="TRACE">Arguments: [ 'Remote' | 'http://127.0.0.1:${PORT_NUMBER}/' ]</msg>
+<msg timestamp="20230731 10:20:52.613" level="FAIL">Getting keyword names from library 'Remote' failed: Calling dynamic method 'get_keyword_names' failed: Connecting remote server at http://127.0.0.1:9999/ failed: [Errno 111] Connection refused</msg>
+<msg timestamp="20230731 10:20:52.613" level="DEBUG">Traceback (most recent call last):
+  None</msg>
+<status status="FAIL" starttime="20230731 10:20:52.608" endtime="20230731 10:20:52.613"/>
+</kw>
+<kw name="Import Library" library="BuiltIn">
+<arg>Remote</arg>
+<arg>http://127.0.0.1:${PORT_NUMBER}/</arg>
+<doc>Imports a library with the given name and optional arguments.</doc>
+<msg timestamp="20230731 10:20:53.614" level="TRACE">Arguments: [ 'Remote' | 'http://127.0.0.1:${PORT_NUMBER}/' ]</msg>
+<msg timestamp="20230731 10:20:53.618" level="FAIL">Getting keyword names from library 'Remote' failed: Calling dynamic method 'get_keyword_names' failed: Connecting remote server at http://127.0.0.1:9999/ failed: [Errno 111] Connection refused</msg>
+<msg timestamp="20230731 10:20:53.618" level="DEBUG">Traceback (most recent call last):
+  None</msg>
+<status status="FAIL" starttime="20230731 10:20:53.614" endtime="20230731 10:20:53.618"/>
+</kw>
+<kw name="Import Library" library="BuiltIn">
+<arg>Remote</arg>
+<arg>http://127.0.0.1:${PORT_NUMBER}/</arg>
+<doc>Imports a library with the given name and optional arguments.</doc>
+<msg timestamp="20230731 10:20:54.619" level="TRACE">Arguments: [ 'Remote' | 'http://127.0.0.1:${PORT_NUMBER}/' ]</msg>
+<msg timestamp="20230731 10:20:54.623" level="FAIL">Getting keyword names from library 'Remote' failed: Calling dynamic method 'get_keyword_names' failed: Connecting remote server at http://127.0.0.1:9999/ failed: [Errno 111] Connection refused</msg>
+<msg timestamp="20230731 10:20:54.623" level="DEBUG">Traceback (most recent call last):
+  None</msg>
+<status status="FAIL" starttime="20230731 10:20:54.618" endtime="20230731 10:20:54.623"/>
+</kw>
+<kw name="Import Library" library="BuiltIn">
+<arg>Remote</arg>
+<arg>http://127.0.0.1:${PORT_NUMBER}/</arg>
+<doc>Imports a library with the given name and optional arguments.</doc>
+<msg timestamp="20230731 10:20:55.624" level="TRACE">Arguments: [ 'Remote' | 'http://127.0.0.1:${PORT_NUMBER}/' ]</msg>
+<msg timestamp="20230731 10:20:55.628" level="FAIL">Getting keyword names from library 'Remote' failed: Calling dynamic method 'get_keyword_names' failed: Connecting remote server at http://127.0.0.1:9999/ failed: [Errno 111] Connection refused</msg>
+<msg timestamp="20230731 10:20:55.628" level="DEBUG">Traceback (most recent call last):
+  None</msg>
+<status status="FAIL" starttime="20230731 10:20:55.624" endtime="20230731 10:20:55.628"/>
+</kw>
+<kw name="Import Library" library="BuiltIn">
+<arg>Remote</arg>
+<arg>http://127.0.0.1:${PORT_NUMBER}/</arg>
+<doc>Imports a library with the given name and optional arguments.</doc>
+<msg timestamp="20230731 10:20:56.629" level="TRACE">Arguments: [ 'Remote' | 'http://127.0.0.1:${PORT_NUMBER}/' ]</msg>
+<msg timestamp="20230731 10:20:56.633" level="FAIL">Getting keyword names from library 'Remote' failed: Calling dynamic method 'get_keyword_names' failed: Connecting remote server at http://127.0.0.1:9999/ failed: [Errno 111] Connection refused</msg>
+<msg timestamp="20230731 10:20:56.633" level="DEBUG">Traceback (most recent call last):
+  None</msg>
+<status status="FAIL" starttime="20230731 10:20:56.629" endtime="20230731 10:20:56.633"/>
+</kw>
+<kw name="Import Library" library="BuiltIn">
+<arg>Remote</arg>
+<arg>http://127.0.0.1:${PORT_NUMBER}/</arg>
+<doc>Imports a library with the given name and optional arguments.</doc>
+<msg timestamp="20230731 10:20:57.634" level="TRACE">Arguments: [ 'Remote' | 'http://127.0.0.1:${PORT_NUMBER}/' ]</msg>
+<msg timestamp="20230731 10:20:57.639" level="FAIL">Getting keyword names from library 'Remote' failed: Calling dynamic method 'get_keyword_names' failed: Connecting remote server at http://127.0.0.1:9999/ failed: [Errno 111] Connection refused</msg>
+<msg timestamp="20230731 10:20:57.639" level="DEBUG">Traceback (most recent call last):
+  None</msg>
+<status status="FAIL" starttime="20230731 10:20:57.634" endtime="20230731 10:20:57.639"/>
+</kw>
+<kw name="Import Library" library="BuiltIn">
+<arg>Remote</arg>
+<arg>http://127.0.0.1:${PORT_NUMBER}/</arg>
+<doc>Imports a library with the given name and optional arguments.</doc>
+<msg timestamp="20230731 10:20:58.640" level="TRACE">Arguments: [ 'Remote' | 'http://127.0.0.1:${PORT_NUMBER}/' ]</msg>
+<msg timestamp="20230731 10:20:59.440" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230731 10:20:58.640" endtime="20230731 10:20:59.440"/>
+</kw>
+<msg timestamp="20230731 10:20:59.440" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230731 10:20:49.584" endtime="20230731 10:20:59.440"/>
+</kw>
+<status status="PASS" starttime="20230731 10:20:49.584" endtime="20230731 10:20:59.440"/>
+</branch>
+<status status="PASS" starttime="20230731 10:20:49.584" endtime="20230731 10:20:59.440"/>
+</if>
+<if>
+<branch type="IF" condition="'${SYSTEM}' == 'Windows'">
+<kw name="Wait Until Keyword Succeeds" library="BuiltIn">
+<arg>60s</arg>
+<arg>1s</arg>
+<arg>Import Library</arg>
+<arg>Remote</arg>
+<arg>http://localhost:${PORT_NUMBER}/</arg>
+<doc>Runs the specified keyword and retries if it fails.</doc>
+<status status="NOT RUN" starttime="20230731 10:20:59.441" endtime="20230731 10:20:59.441"/>
+</kw>
+<status status="NOT RUN" starttime="20230731 10:20:59.440" endtime="20230731 10:20:59.441"/>
+</branch>
+<status status="PASS" starttime="20230731 10:20:59.440" endtime="20230731 10:20:59.441"/>
+</if>
+<kw name="Set Default Uart Timeout" library="Remote">
+<arg>${DEFAULT_UART_TIMEOUT}</arg>
+<msg timestamp="20230731 10:20:59.441" level="TRACE">Arguments: [ '8' ]</msg>
+<msg timestamp="20230731 10:20:59.478" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20230731 10:20:59.441" endtime="20230731 10:20:59.478"/>
+</kw>
+<if>
+<branch type="IF" condition="${SAVE_LOG_ON_FAIL}">
+<kw name="Enable Logging To Cache" library="Remote">
+<msg timestamp="20230731 10:20:59.479" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230731 10:20:59.487" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20230731 10:20:59.479" endtime="20230731 10:20:59.487"/>
+</kw>
+<status status="PASS" starttime="20230731 10:20:59.479" endtime="20230731 10:20:59.487"/>
+</branch>
+<status status="PASS" starttime="20230731 10:20:59.478" endtime="20230731 10:20:59.487"/>
+</if>
+<kw name="Set Variable" library="BuiltIn">
+<var>${allowed_chars}</var>
+<arg>abcdefghijklmnopqrstuvwxyz01234567890_-</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230731 10:20:59.488" level="TRACE">Arguments: [ 'abcdefghijklmnopqrstuvwxyz01234567890_-' ]</msg>
+<msg timestamp="20230731 10:20:59.488" level="TRACE">Return: 'abcdefghijklmnopqrstuvwxyz01234567890_-'</msg>
+<msg timestamp="20230731 10:20:59.488" level="INFO">${allowed_chars} = abcdefghijklmnopqrstuvwxyz01234567890_-</msg>
+<status status="PASS" starttime="20230731 10:20:59.488" endtime="20230731 10:20:59.489"/>
+</kw>
+<kw name="Convert To Lower Case" library="String">
+<var>${metrics_fname}</var>
+<arg>${SUITE_NAME}</arg>
+<doc>Converts string to lower case.</doc>
+<msg timestamp="20230731 10:20:59.489" level="TRACE">Arguments: [ 'ASM-CopyString' ]</msg>
+<msg timestamp="20230731 10:20:59.489" level="TRACE">Return: 'asm-copystring'</msg>
+<msg timestamp="20230731 10:20:59.489" level="INFO">${metrics_fname} = asm-copystring</msg>
+<status status="PASS" starttime="20230731 10:20:59.489" endtime="20230731 10:20:59.489"/>
+</kw>
+<kw name="Replace String" library="String">
+<var>${metrics_fname}</var>
+<arg>${metrics_fname}</arg>
+<arg>${SPACE}</arg>
+<arg>_</arg>
+<doc>Replaces ``search_for`` in the given ``string`` with ``replace_with``.</doc>
+<msg timestamp="20230731 10:20:59.490" level="TRACE">Arguments: [ 'asm-copystring' | ' ' | '_' ]</msg>
+<msg timestamp="20230731 10:20:59.490" level="TRACE">Return: 'asm-copystring'</msg>
+<msg timestamp="20230731 10:20:59.490" level="INFO">${metrics_fname} = asm-copystring</msg>
+<status status="PASS" starttime="20230731 10:20:59.490" endtime="20230731 10:20:59.490"/>
+</kw>
+<kw name="Replace String Using Regexp" library="String">
+<var>${metrics_fname}</var>
+<arg>${metrics_fname}</arg>
+<arg>[^${allowed_chars}]+</arg>
+<arg>${EMPTY}</arg>
+<doc>Replaces ``pattern`` in the given ``string`` with ``replace_with``.</doc>
+<msg timestamp="20230731 10:20:59.493" level="TRACE">Arguments: [ 'asm-copystring' | '[^abcdefghijklmnopqrstuvwxyz01234567890_-]+' | '' ]</msg>
+<msg timestamp="20230731 10:20:59.494" level="TRACE">Return: 'asm-copystring'</msg>
+<msg timestamp="20230731 10:20:59.494" level="INFO">${metrics_fname} = asm-copystring</msg>
+<status status="PASS" starttime="20230731 10:20:59.491" endtime="20230731 10:20:59.494"/>
+</kw>
+<kw name="Join Path" library="OperatingSystem">
+<var>${metrics_path}</var>
+<arg>${RESULTS_DIRECTORY}</arg>
+<arg>profiler-${metrics_fname}</arg>
+<doc>Joins the given path part(s) to the given base path.</doc>
+<msg timestamp="20230731 10:20:59.495" level="TRACE">Arguments: [ '/home/app/Program_Ref/stm32f1-assembly/Ex02-CopyString' | 'profiler-asm-copystring' ]</msg>
+<msg timestamp="20230731 10:20:59.495" level="TRACE">Return: '/home/app/Program_Ref/stm32f1-assembly/Ex02-CopyString/profiler-asm-copystring'</msg>
+<msg timestamp="20230731 10:20:59.496" level="INFO">${metrics_path} = /home/app/Program_Ref/stm32f1-assembly/Ex02-CopyString/profiler-asm-copystring</msg>
+<status status="PASS" starttime="20230731 10:20:59.495" endtime="20230731 10:20:59.496"/>
+</kw>
+<if>
+<branch type="IF" condition="${CREATE_EXECUTION_METRICS}">
+<kw name="Execute Command" library="Remote">
+<arg>EnableProfilerGlobally "${metrics_path}"</arg>
+<status status="NOT RUN" starttime="20230731 10:20:59.497" endtime="20230731 10:20:59.497"/>
+</kw>
+<status status="NOT RUN" starttime="20230731 10:20:59.496" endtime="20230731 10:20:59.497"/>
+</branch>
+<status status="PASS" starttime="20230731 10:20:59.496" endtime="20230731 10:20:59.497"/>
+</if>
+<kw name="Reset Emulation" library="Remote">
+<msg timestamp="20230731 10:20:59.497" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230731 10:20:59.523" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20230731 10:20:59.497" endtime="20230731 10:20:59.523"/>
+</kw>
+<msg timestamp="20230731 10:20:59.523" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230731 10:20:49.552" endtime="20230731 10:20:59.523"/>
+</kw>
+<test id="s1-t1" name="Run CPU First">
+<kw name="Create Machine" library="Renode-Common" type="SETUP">
+<msg timestamp="20230731 10:20:59.525" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<arg>mach create</arg>
+<msg timestamp="20230731 10:20:59.525" level="TRACE">Arguments: [ 'mach create' ]</msg>
+<msg timestamp="20230731 10:20:59.602" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20230731 10:20:59.525" endtime="20230731 10:20:59.602"/>
+</kw>
+<kw name="Execute Command" library="Remote">
+<arg>machine LoadPlatformDescription ${MACHINE}</arg>
+<msg timestamp="20230731 10:20:59.603" level="TRACE">Arguments: [ 'machine LoadPlatformDescription @platforms/cpus/stm32f103.repl' ]</msg>
+<msg timestamp="20230731 10:21:04.011" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20230731 10:20:59.602" endtime="20230731 10:21:04.011"/>
+</kw>
+<kw name="Execute Command" library="Remote">
+<arg>sysbus LoadELF ${FIRMWARE}</arg>
+<msg timestamp="20230731 10:21:04.012" level="TRACE">Arguments: [ 'sysbus LoadELF @/home/app/Program_Ref/stm32f1-assembly/Ex02-CopyString/main.elf' ]</msg>
+<msg timestamp="20230731 10:21:04.268" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20230731 10:21:04.012" endtime="20230731 10:21:04.268"/>
+</kw>
+<kw name="Execute Command" library="Remote">
+<arg>sysbus.cpu ExecutionMode SingleStepNonBlocking</arg>
+<msg timestamp="20230731 10:21:04.269" level="TRACE">Arguments: [ 'sysbus.cpu ExecutionMode SingleStepNonBlocking' ]</msg>
+<msg timestamp="20230731 10:21:04.725" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20230731 10:21:04.269" endtime="20230731 10:21:04.725"/>
+</kw>
+<msg timestamp="20230731 10:21:04.726" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230731 10:20:59.524" endtime="20230731 10:21:04.726"/>
+</kw>
+<kw name="Start Simulation" library="Renode-Common">
+<msg timestamp="20230731 10:21:04.726" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<arg>start</arg>
+<msg timestamp="20230731 10:21:04.727" level="TRACE">Arguments: [ 'start' ]</msg>
+<msg timestamp="20230731 10:21:04.855" level="TRACE">Return: 'Starting emulation...\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:04.727" endtime="20230731 10:21:04.855"/>
+</kw>
+<msg timestamp="20230731 10:21:04.855" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230731 10:21:04.726" endtime="20230731 10:21:04.855"/>
+</kw>
+<kw name="Run steps" library="Renode-Common">
+<arg>${LENGTH_RUN}</arg>
+<msg timestamp="20230731 10:21:04.857" level="TRACE">Arguments: [ ${times}='50' ]</msg>
+<for flavor="IN RANGE">
+<var>${index}</var>
+<value>0</value>
+<value>${times}</value>
+<iter>
+<var name="${index}">0</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:04.858" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:04.859" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.072" level="TRACE">Return: '0x00000000080000EE\n\n'</msg>
+<msg timestamp="20230731 10:21:05.072" level="INFO">${return} = 0x00000000080000EE
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:04.859" endtime="20230731 10:21:05.072"/>
+</kw>
+<msg timestamp="20230731 10:21:05.073" level="TRACE">Return: '0x00000000080000EE\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:04.858" endtime="20230731 10:21:05.073"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:04.858" endtime="20230731 10:21:05.073"/>
+</iter>
+<iter>
+<var name="${index}">1</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.073" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.074" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.079" level="TRACE">Return: '0x00000000080000F0\n\n'</msg>
+<msg timestamp="20230731 10:21:05.079" level="INFO">${return} = 0x00000000080000F0
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.074" endtime="20230731 10:21:05.079"/>
+</kw>
+<msg timestamp="20230731 10:21:05.079" level="TRACE">Return: '0x00000000080000F0\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.073" endtime="20230731 10:21:05.079"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.073" endtime="20230731 10:21:05.080"/>
+</iter>
+<iter>
+<var name="${index}">2</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.080" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.081" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.088" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.089" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.081" endtime="20230731 10:21:05.089"/>
+</kw>
+<msg timestamp="20230731 10:21:05.089" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.080" endtime="20230731 10:21:05.089"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.080" endtime="20230731 10:21:05.089"/>
+</iter>
+<iter>
+<var name="${index}">3</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.090" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.091" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.101" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.101" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.091" endtime="20230731 10:21:05.101"/>
+</kw>
+<msg timestamp="20230731 10:21:05.101" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.090" endtime="20230731 10:21:05.101"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.090" endtime="20230731 10:21:05.101"/>
+</iter>
+<iter>
+<var name="${index}">4</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.102" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.102" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.108" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.108" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.102" endtime="20230731 10:21:05.108"/>
+</kw>
+<msg timestamp="20230731 10:21:05.109" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.102" endtime="20230731 10:21:05.109"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.101" endtime="20230731 10:21:05.109"/>
+</iter>
+<iter>
+<var name="${index}">5</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.110" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.110" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.118" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.118" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.110" endtime="20230731 10:21:05.118"/>
+</kw>
+<msg timestamp="20230731 10:21:05.118" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.109" endtime="20230731 10:21:05.118"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.109" endtime="20230731 10:21:05.118"/>
+</iter>
+<iter>
+<var name="${index}">6</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.119" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.119" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.125" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.126" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.119" endtime="20230731 10:21:05.126"/>
+</kw>
+<msg timestamp="20230731 10:21:05.126" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.119" endtime="20230731 10:21:05.126"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.118" endtime="20230731 10:21:05.127"/>
+</iter>
+<iter>
+<var name="${index}">7</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.127" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.128" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.134" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.135" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.128" endtime="20230731 10:21:05.135"/>
+</kw>
+<msg timestamp="20230731 10:21:05.135" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.127" endtime="20230731 10:21:05.135"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.127" endtime="20230731 10:21:05.135"/>
+</iter>
+<iter>
+<var name="${index}">8</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.136" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.136" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.143" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.144" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.136" endtime="20230731 10:21:05.144"/>
+</kw>
+<msg timestamp="20230731 10:21:05.144" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.136" endtime="20230731 10:21:05.144"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.136" endtime="20230731 10:21:05.144"/>
+</iter>
+<iter>
+<var name="${index}">9</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.145" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.145" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.150" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.150" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.145" endtime="20230731 10:21:05.150"/>
+</kw>
+<msg timestamp="20230731 10:21:05.151" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.144" endtime="20230731 10:21:05.151"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.144" endtime="20230731 10:21:05.151"/>
+</iter>
+<iter>
+<var name="${index}">10</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.152" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.152" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.161" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.161" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.152" endtime="20230731 10:21:05.161"/>
+</kw>
+<msg timestamp="20230731 10:21:05.161" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.151" endtime="20230731 10:21:05.162"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.151" endtime="20230731 10:21:05.162"/>
+</iter>
+<iter>
+<var name="${index}">11</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.163" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.164" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.172" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.173" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.164" endtime="20230731 10:21:05.173"/>
+</kw>
+<msg timestamp="20230731 10:21:05.173" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.163" endtime="20230731 10:21:05.174"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.162" endtime="20230731 10:21:05.174"/>
+</iter>
+<iter>
+<var name="${index}">12</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.176" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.176" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.183" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.184" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.176" endtime="20230731 10:21:05.184"/>
+</kw>
+<msg timestamp="20230731 10:21:05.184" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.175" endtime="20230731 10:21:05.184"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.174" endtime="20230731 10:21:05.184"/>
+</iter>
+<iter>
+<var name="${index}">13</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.185" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.185" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.191" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.192" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.185" endtime="20230731 10:21:05.192"/>
+</kw>
+<msg timestamp="20230731 10:21:05.192" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.185" endtime="20230731 10:21:05.193"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.184" endtime="20230731 10:21:05.193"/>
+</iter>
+<iter>
+<var name="${index}">14</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.194" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.194" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.203" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.203" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.194" endtime="20230731 10:21:05.203"/>
+</kw>
+<msg timestamp="20230731 10:21:05.203" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.193" endtime="20230731 10:21:05.204"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.193" endtime="20230731 10:21:05.204"/>
+</iter>
+<iter>
+<var name="${index}">15</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.205" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.205" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.213" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.213" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.205" endtime="20230731 10:21:05.213"/>
+</kw>
+<msg timestamp="20230731 10:21:05.213" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.204" endtime="20230731 10:21:05.213"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.204" endtime="20230731 10:21:05.213"/>
+</iter>
+<iter>
+<var name="${index}">16</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.214" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.214" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.219" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.219" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.214" endtime="20230731 10:21:05.219"/>
+</kw>
+<msg timestamp="20230731 10:21:05.220" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.214" endtime="20230731 10:21:05.220"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.214" endtime="20230731 10:21:05.220"/>
+</iter>
+<iter>
+<var name="${index}">17</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.220" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.221" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.229" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.229" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.221" endtime="20230731 10:21:05.229"/>
+</kw>
+<msg timestamp="20230731 10:21:05.229" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.220" endtime="20230731 10:21:05.230"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.220" endtime="20230731 10:21:05.230"/>
+</iter>
+<iter>
+<var name="${index}">18</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.230" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.231" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.235" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.235" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.230" endtime="20230731 10:21:05.236"/>
+</kw>
+<msg timestamp="20230731 10:21:05.236" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.230" endtime="20230731 10:21:05.236"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.230" endtime="20230731 10:21:05.236"/>
+</iter>
+<iter>
+<var name="${index}">19</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.237" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.237" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.245" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.245" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.237" endtime="20230731 10:21:05.245"/>
+</kw>
+<msg timestamp="20230731 10:21:05.245" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.236" endtime="20230731 10:21:05.245"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.236" endtime="20230731 10:21:05.245"/>
+</iter>
+<iter>
+<var name="${index}">20</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.247" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.247" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.254" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.254" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.247" endtime="20230731 10:21:05.255"/>
+</kw>
+<msg timestamp="20230731 10:21:05.255" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.246" endtime="20230731 10:21:05.255"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.246" endtime="20230731 10:21:05.255"/>
+</iter>
+<iter>
+<var name="${index}">21</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.256" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.256" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.262" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.262" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.256" endtime="20230731 10:21:05.262"/>
+</kw>
+<msg timestamp="20230731 10:21:05.263" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.255" endtime="20230731 10:21:05.263"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.255" endtime="20230731 10:21:05.263"/>
+</iter>
+<iter>
+<var name="${index}">22</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.264" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.264" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.275" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.276" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.264" endtime="20230731 10:21:05.276"/>
+</kw>
+<msg timestamp="20230731 10:21:05.276" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.263" endtime="20230731 10:21:05.276"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.263" endtime="20230731 10:21:05.276"/>
+</iter>
+<iter>
+<var name="${index}">23</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.278" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.278" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.285" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.285" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.278" endtime="20230731 10:21:05.285"/>
+</kw>
+<msg timestamp="20230731 10:21:05.286" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.277" endtime="20230731 10:21:05.286"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.277" endtime="20230731 10:21:05.286"/>
+</iter>
+<iter>
+<var name="${index}">24</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.287" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.287" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.296" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.296" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.287" endtime="20230731 10:21:05.296"/>
+</kw>
+<msg timestamp="20230731 10:21:05.296" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.286" endtime="20230731 10:21:05.297"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.286" endtime="20230731 10:21:05.297"/>
+</iter>
+<iter>
+<var name="${index}">25</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.298" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.298" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.304" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.304" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.298" endtime="20230731 10:21:05.304"/>
+</kw>
+<msg timestamp="20230731 10:21:05.305" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.297" endtime="20230731 10:21:05.305"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.297" endtime="20230731 10:21:05.305"/>
+</iter>
+<iter>
+<var name="${index}">26</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.306" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.306" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.315" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.316" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.306" endtime="20230731 10:21:05.316"/>
+</kw>
+<msg timestamp="20230731 10:21:05.316" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.305" endtime="20230731 10:21:05.317"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.305" endtime="20230731 10:21:05.317"/>
+</iter>
+<iter>
+<var name="${index}">27</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.318" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.318" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.326" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.326" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.318" endtime="20230731 10:21:05.326"/>
+</kw>
+<msg timestamp="20230731 10:21:05.326" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.317" endtime="20230731 10:21:05.326"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.317" endtime="20230731 10:21:05.326"/>
+</iter>
+<iter>
+<var name="${index}">28</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.327" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.327" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.336" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.337" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.327" endtime="20230731 10:21:05.337"/>
+</kw>
+<msg timestamp="20230731 10:21:05.337" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.327" endtime="20230731 10:21:05.337"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.327" endtime="20230731 10:21:05.338"/>
+</iter>
+<iter>
+<var name="${index}">29</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.339" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.340" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.345" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.345" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.339" endtime="20230731 10:21:05.345"/>
+</kw>
+<msg timestamp="20230731 10:21:05.346" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.339" endtime="20230731 10:21:05.346"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.338" endtime="20230731 10:21:05.346"/>
+</iter>
+<iter>
+<var name="${index}">30</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.347" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.347" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.355" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.355" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.347" endtime="20230731 10:21:05.355"/>
+</kw>
+<msg timestamp="20230731 10:21:05.356" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.346" endtime="20230731 10:21:05.356"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.346" endtime="20230731 10:21:05.356"/>
+</iter>
+<iter>
+<var name="${index}">31</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.356" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.357" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.362" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.363" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.357" endtime="20230731 10:21:05.363"/>
+</kw>
+<msg timestamp="20230731 10:21:05.364" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.356" endtime="20230731 10:21:05.364"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.356" endtime="20230731 10:21:05.364"/>
+</iter>
+<iter>
+<var name="${index}">32</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.365" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.365" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.373" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.373" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.365" endtime="20230731 10:21:05.373"/>
+</kw>
+<msg timestamp="20230731 10:21:05.374" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.364" endtime="20230731 10:21:05.374"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.364" endtime="20230731 10:21:05.374"/>
+</iter>
+<iter>
+<var name="${index}">33</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.375" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.376" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.387" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.388" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.376" endtime="20230731 10:21:05.388"/>
+</kw>
+<msg timestamp="20230731 10:21:05.388" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.375" endtime="20230731 10:21:05.388"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.375" endtime="20230731 10:21:05.389"/>
+</iter>
+<iter>
+<var name="${index}">34</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.390" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.390" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.401" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.401" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.390" endtime="20230731 10:21:05.401"/>
+</kw>
+<msg timestamp="20230731 10:21:05.401" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.389" endtime="20230731 10:21:05.402"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.389" endtime="20230731 10:21:05.402"/>
+</iter>
+<iter>
+<var name="${index}">35</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.402" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.403" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.410" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.410" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.403" endtime="20230731 10:21:05.411"/>
+</kw>
+<msg timestamp="20230731 10:21:05.411" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.402" endtime="20230731 10:21:05.411"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.402" endtime="20230731 10:21:05.412"/>
+</iter>
+<iter>
+<var name="${index}">36</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.413" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.414" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.420" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.420" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.413" endtime="20230731 10:21:05.420"/>
+</kw>
+<msg timestamp="20230731 10:21:05.420" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.412" endtime="20230731 10:21:05.421"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.412" endtime="20230731 10:21:05.421"/>
+</iter>
+<iter>
+<var name="${index}">37</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.422" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.422" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.430" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.430" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.422" endtime="20230731 10:21:05.430"/>
+</kw>
+<msg timestamp="20230731 10:21:05.431" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.421" endtime="20230731 10:21:05.431"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.421" endtime="20230731 10:21:05.431"/>
+</iter>
+<iter>
+<var name="${index}">38</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.433" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.433" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.440" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.440" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.433" endtime="20230731 10:21:05.440"/>
+</kw>
+<msg timestamp="20230731 10:21:05.441" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.432" endtime="20230731 10:21:05.441"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.431" endtime="20230731 10:21:05.441"/>
+</iter>
+<iter>
+<var name="${index}">39</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.442" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.442" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.453" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.453" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.442" endtime="20230731 10:21:05.453"/>
+</kw>
+<msg timestamp="20230731 10:21:05.454" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.441" endtime="20230731 10:21:05.454"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.441" endtime="20230731 10:21:05.454"/>
+</iter>
+<iter>
+<var name="${index}">40</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.455" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.455" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.461" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.461" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.455" endtime="20230731 10:21:05.461"/>
+</kw>
+<msg timestamp="20230731 10:21:05.462" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.454" endtime="20230731 10:21:05.462"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.454" endtime="20230731 10:21:05.462"/>
+</iter>
+<iter>
+<var name="${index}">41</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.462" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.463" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.471" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.471" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.463" endtime="20230731 10:21:05.471"/>
+</kw>
+<msg timestamp="20230731 10:21:05.472" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.462" endtime="20230731 10:21:05.472"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.462" endtime="20230731 10:21:05.472"/>
+</iter>
+<iter>
+<var name="${index}">42</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.473" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.474" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.483" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.484" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.473" endtime="20230731 10:21:05.484"/>
+</kw>
+<msg timestamp="20230731 10:21:05.484" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.473" endtime="20230731 10:21:05.484"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.472" endtime="20230731 10:21:05.484"/>
+</iter>
+<iter>
+<var name="${index}">43</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.485" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.486" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.490" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.491" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.485" endtime="20230731 10:21:05.491"/>
+</kw>
+<msg timestamp="20230731 10:21:05.491" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.485" endtime="20230731 10:21:05.491"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.484" endtime="20230731 10:21:05.491"/>
+</iter>
+<iter>
+<var name="${index}">44</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.492" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.492" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.499" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.499" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.492" endtime="20230731 10:21:05.500"/>
+</kw>
+<msg timestamp="20230731 10:21:05.500" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.491" endtime="20230731 10:21:05.500"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.491" endtime="20230731 10:21:05.500"/>
+</iter>
+<iter>
+<var name="${index}">45</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.501" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.501" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.506" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.506" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.501" endtime="20230731 10:21:05.506"/>
+</kw>
+<msg timestamp="20230731 10:21:05.506" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.500" endtime="20230731 10:21:05.506"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.500" endtime="20230731 10:21:05.507"/>
+</iter>
+<iter>
+<var name="${index}">46</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.507" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.508" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.515" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.515" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.507" endtime="20230731 10:21:05.515"/>
+</kw>
+<msg timestamp="20230731 10:21:05.515" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.507" endtime="20230731 10:21:05.515"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.507" endtime="20230731 10:21:05.515"/>
+</iter>
+<iter>
+<var name="${index}">47</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.516" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.517" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.528" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.528" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.517" endtime="20230731 10:21:05.528"/>
+</kw>
+<msg timestamp="20230731 10:21:05.528" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.516" endtime="20230731 10:21:05.529"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.516" endtime="20230731 10:21:05.529"/>
+</iter>
+<iter>
+<var name="${index}">48</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.530" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.530" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.535" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.535" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.530" endtime="20230731 10:21:05.535"/>
+</kw>
+<msg timestamp="20230731 10:21:05.535" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.529" endtime="20230731 10:21:05.535"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.529" endtime="20230731 10:21:05.536"/>
+</iter>
+<iter>
+<var name="${index}">49</var>
+<kw name="Run 1 Step" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.536" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu Step</arg>
+<msg timestamp="20230731 10:21:05.537" level="TRACE">Arguments: [ 'sysbus.cpu Step' ]</msg>
+<msg timestamp="20230731 10:21:05.543" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<msg timestamp="20230731 10:21:05.544" level="INFO">${return} = 0x00000000080000F4
+
+</msg>
+<status status="PASS" starttime="20230731 10:21:05.536" endtime="20230731 10:21:05.544"/>
+</kw>
+<msg timestamp="20230731 10:21:05.544" level="TRACE">Return: '0x00000000080000F4\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.536" endtime="20230731 10:21:05.544"/>
+</kw>
+<status status="PASS" starttime="20230731 10:21:05.536" endtime="20230731 10:21:05.544"/>
+</iter>
+<status status="PASS" starttime="20230731 10:21:04.857" endtime="20230731 10:21:05.544"/>
+</for>
+<msg timestamp="20230731 10:21:05.544" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230731 10:21:04.856" endtime="20230731 10:21:05.545"/>
+</kw>
+<kw name="Pause simulation" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.545" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<arg>pause</arg>
+<msg timestamp="20230731 10:21:05.546" level="TRACE">Arguments: [ 'pause' ]</msg>
+<msg timestamp="20230731 10:21:05.554" level="TRACE">Return: 'Pausing emulation...\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.545" endtime="20230731 10:21:05.555"/>
+</kw>
+<msg timestamp="20230731 10:21:05.555" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230731 10:21:05.545" endtime="20230731 10:21:05.555"/>
+</kw>
+<kw name="Get All Register" library="Renode-Common">
+<msg timestamp="20230731 10:21:05.556" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<var>${return}</var>
+<arg>sysbus.cpu GetRegistersValues</arg>
+<msg timestamp="20230731 10:21:05.556" level="TRACE">Arguments: [ 'sysbus.cpu GetRegistersValues' ]</msg>
+<msg timestamp="20230731 10:21:05.604" level="TRACE">Return: '----------------------\n\n|Name     |Value     |\n\n----------------------\n\n|Control  |0x0       |\n\n|BasePri  |0x0       |\n\n|VecBase  |0x8000000 |\n\n|CurrentSP|0x0       |\n\n|OtherSP  |0x0       |\n\n|FPCCR    |0xC0000000|\n\n|FPCAR    |0x0       |\n\n|FPDSCR   |0x0       |\n\n|CPACR    |0x0       |\n\n|PRIMASK  |0x0       |\n\n|SP       |0x20000400|\n\n|LR       |0x0       |\n\n|PC       |0x80000F4 |\n\n|CPSR     |0x41000000|\n\n|R0       |0x0       |\n\n|R1       |0x12345678|\n\n|R2       |0x87654321|\n\n|R3       |0x99999999|\n\n|R4       |0x0       |\n\n|R5       |0x0       |\n\n|R6       |0x0       |\n\n|R7       |0x0       |\n\n|R8       |0x0       |\n\n|R9       |0x0       |\n\n|R10      |0x0       |\n\n|R11      |0x0       |\n\n|R12      |0x0       |\n\n|R13      |0x20000400|\n\n|R14      |0x0       |\n\n|R15      |0x80000F4 |\n\n----------------------\n\n'</msg>
+<msg timestamp="20230731 10:21:05.605" level="INFO">${return} = ----------------------
+
+|Name     |Value     |
+
+----------------------
+
+|Control  |0x0       |
+
+|BasePri  |0x0       |
+
+|VecBase  |0x8000000 |
+
+|CurrentSP|0x0       |
+
+|OtherSP  |0x0       |
+
+|FPCCR  ...</msg>
+<status status="PASS" starttime="20230731 10:21:05.556" endtime="20230731 10:21:05.605"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${return}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20230731 10:21:05.606" level="TRACE">Arguments: [ '----------------------\n\n|Name     |Value     |\n\n----------------------\n\n|Control  |0x0       |\n\n|BasePri  |0x0       |\n\n|VecBase  |0x8000000 |\n\n|CurrentSP|0x0       |\n\n|OtherSP  |0x0       |\n\n|FPCCR    |0xC0000000|\n\n|FPCAR    |0x0       |\n\n|FPDSCR   |0x0       |\n\n|CPACR    |0x0       |\n\n|PRIMASK  |0x0       |\n\n|SP       |0x20000400|\n\n|LR       |0x0       |\n\n|PC       |0x80000F4 |\n\n|CPSR     |0x41000000|\n\n|R0       |0x0       |\n\n|R1       |0x12345678|\n\n|R2       |0x87654321|\n\n|R3       |0x99999999|\n\n|R4       |0x0       |\n\n|R5       |0x0       |\n\n|R6       |0x0       |\n\n|R7       |0x0       |\n\n|R8       |0x0       |\n\n|R9       |0x0       |\n\n|R10      |0x0       |\n\n|R11      |0x0       |\n\n|R12      |0x0       |\n\n|R13      |0x20000400|\n\n|R14      |0x0       |\n\n|R15      |0x80000F4 |\n\n----------------------\n\n' ]</msg>
+<msg timestamp="20230731 10:21:05.606" level="INFO">----------------------
+
+|Name     |Value     |
+
+----------------------
+
+|Control  |0x0       |
+
+|BasePri  |0x0       |
+
+|VecBase  |0x8000000 |
+
+|CurrentSP|0x0       |
+
+|OtherSP  |0x0       |
+
+|FPCCR    |0xC0000000|
+
+|FPCAR    |0x0       |
+
+|FPDSCR   |0x0       |
+
+|CPACR    |0x0       |
+
+|PRIMASK  |0x0       |
+
+|SP       |0x20000400|
+
+|LR       |0x0       |
+
+|PC       |0x80000F4 |
+
+|CPSR     |0x41000000|
+
+|R0       |0x0       |
+
+|R1       |0x12345678|
+
+|R2       |0x87654321|
+
+|R3       |0x99999999|
+
+|R4       |0x0       |
+
+|R5       |0x0       |
+
+|R6       |0x0       |
+
+|R7       |0x0       |
+
+|R8       |0x0       |
+
+|R9       |0x0       |
+
+|R10      |0x0       |
+
+|R11      |0x0       |
+
+|R12      |0x0       |
+
+|R13      |0x20000400|
+
+|R14      |0x0       |
+
+|R15      |0x80000F4 |
+
+----------------------
+
+</msg>
+<msg timestamp="20230731 10:21:05.606" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230731 10:21:05.605" endtime="20230731 10:21:05.606"/>
+</kw>
+<msg timestamp="20230731 10:21:05.607" level="TRACE">Return: '----------------------\n\n|Name     |Value     |\n\n----------------------\n\n|Control  |0x0       |\n\n|BasePri  |0x0       |\n\n|VecBase  |0x8000000 |\n\n|CurrentSP|0x0       |\n\n|OtherSP  |0x0       |\n\n|FPCCR    |0xC0000000|\n\n|FPCAR    |0x0       |\n\n|FPDSCR   |0x0       |\n\n|CPACR    |0x0       |\n\n|PRIMASK  |0x0       |\n\n|SP       |0x20000400|\n\n|LR       |0x0       |\n\n|PC       |0x80000F4 |\n\n|CPSR     |0x41000000|\n\n|R0       |0x0       |\n\n|R1       |0x12345678|\n\n|R2       |0x87654321|\n\n|R3       |0x99999999|\n\n|R4       |0x0       |\n\n|R5       |0x0       |\n\n|R6       |0x0       |\n\n|R7       |0x0       |\n\n|R8       |0x0       |\n\n|R9       |0x0       |\n\n|R10      |0x0       |\n\n|R11      |0x0       |\n\n|R12      |0x0       |\n\n|R13      |0x20000400|\n\n|R14      |0x0       |\n\n|R15      |0x80000F4 |\n\n----------------------\n\n'</msg>
+<status status="PASS" starttime="20230731 10:21:05.555" endtime="20230731 10:21:05.607"/>
+</kw>
+<kw name="Quit Machine" library="Renode-Common" type="TEARDOWN">
+<msg timestamp="20230731 10:21:05.608" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<arg>Clear</arg>
+<msg timestamp="20230731 10:21:05.609" level="TRACE">Arguments: [ 'Clear' ]</msg>
+<msg timestamp="20230731 10:21:05.761" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20230731 10:21:05.608" endtime="20230731 10:21:05.761"/>
+</kw>
+<msg timestamp="20230731 10:21:05.761" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230731 10:21:05.608" endtime="20230731 10:21:05.761"/>
+</kw>
+<status status="PASS" starttime="20230731 10:20:59.524" endtime="20230731 10:21:05.762"/>
+</test>
+<kw name="Teardown" library="renode-keywords" type="TEARDOWN">
+<msg timestamp="20230731 10:21:05.764" level="TRACE">Arguments: [  ]</msg>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER}">
+<kw name="Stop Remote Server" library="Remote">
+<status status="NOT RUN" starttime="20230731 10:21:05.764" endtime="20230731 10:21:05.764"/>
+</kw>
+<status status="NOT RUN" starttime="20230731 10:21:05.764" endtime="20230731 10:21:05.764"/>
+</branch>
+<status status="PASS" starttime="20230731 10:21:05.764" endtime="20230731 10:21:05.764"/>
+</if>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER}">
+<kw name="Wait For Process" library="Process">
+<doc>Waits for the process to complete or to reach the given timeout.</doc>
+<status status="NOT RUN" starttime="20230731 10:21:05.765" endtime="20230731 10:21:05.765"/>
+</kw>
+<status status="NOT RUN" starttime="20230731 10:21:05.765" endtime="20230731 10:21:05.765"/>
+</branch>
+<status status="PASS" starttime="20230731 10:21:05.765" endtime="20230731 10:21:05.765"/>
+</if>
+<msg timestamp="20230731 10:21:05.765" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230731 10:21:05.763" endtime="20230731 10:21:05.765"/>
+</kw>
+<meta name="HotSpot_Action">-</meta>
+<status status="PASS" starttime="20230731 10:20:49.365" endtime="20230731 10:21:05.765"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="ASM-CopyString">ASM-CopyString</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
