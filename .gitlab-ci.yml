@@ -12,7 +12,7 @@ build-job: # This job runs the build stage first
         - echo "Compile complete."
         - arm-none-eabi-gcc -v
         - make
-        - renode-test
+        - renode-test /home/renode/tests/platforms/STM32F103.robot
         
 unit-test-job: # This job runs in the test stage.
     stage: test # Runs if build stage completes successfully.
