@@ -12,7 +12,9 @@ build-job: # This job runs the build stage first
         - echo "Compile complete."
         - arm-none-eabi-gcc -v
         - make
-        - renode-test --outputdir testOutput /home/renode/tests/platforms/STM32F103.robot
+        - mkdir testOutput
+        - cd testOutput
+        - renode-test /home/renode/tests/platforms/STM32F103.robot
     artifacts:
         when: always
         paths:
