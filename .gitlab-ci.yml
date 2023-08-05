@@ -19,6 +19,7 @@ build-job: # This job runs the build stage first
         when: always
         paths:
             - testOutput
+            
 
         
 robot-run-job: # This job runs in the test stage.
@@ -30,5 +31,6 @@ robot-run-job: # This job runs in the test stage.
     artifacts:
         when: always
         paths:
+            - Ex02-CopyString/main.hex
             - Ex02-CopyString/report.html
             - Ex02-CopyString/log.html
