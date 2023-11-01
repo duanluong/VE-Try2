@@ -16,7 +16,7 @@ pipeline {
                     sh 'pwd'
                     // sh 'renode'
                     // sh 'quit'
-                    // sh 'renode-test ASM-CopyString.robot'
+                    sh 'renode-test ASM-CopyString.robot'
                     sh 'renode-test /home/renode/tests/platforms/STM32F103.robot'
                     // sh 'renode-test /home/renode/tests/platforms/SiFive-FU540.robot'
                 }
