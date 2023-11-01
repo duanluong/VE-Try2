@@ -20,11 +20,10 @@ pipeline {
                 dir('Ex02-CopyString/outTest') {
                     sh 'ls'
                 }
-                // sh 'renode-test /home/renode/tests/platforms/STM32F103.robot'
             }
         }
         
-        stage('Goodbye') {
+        stage('Godbye') {
             steps {
                 echo 'Gooodbye, Jenkins!'
             }
