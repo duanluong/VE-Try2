@@ -26,12 +26,12 @@ pipeline {
                 echo 'Gooodbye, Jenkins!'
             }
         }
+    }
 
-        // post {
-        //     always {
-        //         robot outputPath: 'Ex02-CopyString/outTest/'
-        //         archive "Ex02-CopyString/outTest/*"
-        //     }
-        // }
+    post {
+        always {
+            robot outputPath: 'Ex02-CopyString/outTest/'
+            archive "Ex02-CopyString/outTest/*"
+        }
     }
 }
