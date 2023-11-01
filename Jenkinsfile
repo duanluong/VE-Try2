@@ -11,6 +11,7 @@ pipeline {
                 sh 'arm-none-eabi-gcc -v'
                 sh 'ls'
                 dir('Ex02-CopyString') {
+                    sh 'mkdir -p outTest'
                     sh 'make'
                     sh 'ls'
                     sh 'renode-test ASM-CopyString.robot -d outTest'
