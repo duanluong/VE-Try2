@@ -34,8 +34,8 @@ pipeline {
         always {
             // robot outputPath: 'Ex02-CopyString/outTest/'
             // archive " /root/.jenkins/workspace/Test02/Ex02-CopyString/*"
-            archiveArtifacts artifacts: Ex02-CopyString/*', fingerprint: true
-            robot outputPath: 'Ex02-CopyString/'
+            archiveArtifacts artifacts: Ex02-CopyString/Test/*', fingerprint: true
+            robot outputPath: 'Ex02-CopyString/Test/'
         }
     }
 }
