@@ -14,7 +14,8 @@ pipeline {
                     sh 'make'
                     sh 'ls'
                     sh 'pwd'
-                    sh 'renode-test /home/renode/tests/platforms/STM32F103.robot'
+                    sh 'renode-test'
+                    // sh 'renode-test /home/renode/tests/platforms/STM32F103.robot'
                 }
                 // sh 'renode-test /home/renode/tests/platforms/STM32F103.robot'
             }
