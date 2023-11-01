@@ -13,6 +13,7 @@ pipeline {
                 sh 'cd Ex02-CopyString'
                 sh 'make'
                 sh 'ls'
+                sh 'pwd'
             }
         }
         
