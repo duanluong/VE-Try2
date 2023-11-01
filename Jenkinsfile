@@ -18,16 +18,18 @@ pipeline {
                 }
                 // sh 'renode-test /home/renode/tests/platforms/STM32F103.robot'
             }
-
-            always {
-                robot outputPath: 'Ex02-CopyString/outTest/'
-                archive "Ex02-CopyString/outTest/*"
-            }
         }
         
         stage('Goodbye') {
             steps {
                 echo 'Gooodbye, Jenkins!'
+            }
+        }
+
+        post{
+            always {
+                robot outputPath: 'Ex02-CopyString/outTest/'
+                archive "Ex02-CopyString/outTest/*"
             }
         }
     }
