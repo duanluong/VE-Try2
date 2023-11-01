@@ -20,7 +20,7 @@ pipeline {
             }
         }
         
-        stage('Godbye') {
+        stage('Goddbye') {
             steps {
                 echo 'Goodbye, Jenkins!'
             }
