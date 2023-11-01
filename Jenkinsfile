@@ -9,6 +9,7 @@ pipeline {
             steps {
                 echo 'Hello'
                 sh 'arm-none-eabi-gcc -v'
+                sh 'ls'
             }
         }
         
