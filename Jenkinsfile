@@ -10,6 +10,8 @@ pipeline {
                 echo 'Hello'
                 sh 'arm-none-eabi-gcc -v'
                 sh 'ls'
+                sh 'cd Ex02-CopyString'
+                sh 'make'
             }
         }
         
