@@ -11,6 +11,7 @@ pipeline {
                 sh 'arm-none-eabi-gcc -v'
                 sh 'ls'
                 sh 'cd Ex02-CopyString'
+                sh 'cd Ex02-CopyString'
                 sh 'make'
                 sh 'ls'
                 sh 'pwd'
