@@ -17,6 +17,9 @@ pipeline {
                     sh 'renode-test -d outTest ASM-CopyString.robot'
                     // sh 'renode-test /home/renode/tests/platforms/STM32F103.robot'
                 }
+                dir('Ex02-CopyString/outTest') {
+                    sh 'ls'
+                }
                 // sh 'renode-test /home/renode/tests/platforms/STM32F103.robot'
             }
         }
@@ -30,8 +33,8 @@ pipeline {
 
     post {
         always {
-            robot outputPath: 'Ex02-CopyString/outTest/'
-            archive "Ex02-CopyString/outTest/*"
+            // robot outputPath: 'Ex02-CopyString/outTest/'
+            archive Ex02-CopyString/outTest/*
         }
     }
 }
