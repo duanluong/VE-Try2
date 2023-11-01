@@ -5,7 +5,7 @@ pipeline {
         }
     }
     stages {
-        stage('Hello') {
+        stage('Build') {
             steps {
                 echo 'Hello'
                 sh 'arm-none-eabi-gcc -v'
@@ -20,7 +20,7 @@ pipeline {
             }
         }
         
-        stage('Goddbye') {
+        stage('End') {
             steps {
                 echo 'Goodbye, Jenkins!'
             }
