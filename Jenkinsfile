@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Hello'
+                echo 'Hello from GCC'
                 sh 'arm-none-eabi-gcc -v'
                 sh 'ls'
                 dir('Ex02-CopyString') {
