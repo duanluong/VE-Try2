@@ -13,14 +13,14 @@ pipeline {
                 dir('Ex02-CopyString') {
                     sh 'make'
                     sh 'ls'
-                    sh 'pwd'
-                    // sh 'renode'
-                    // sh 'quit'
-                    sh 'renode-test ASM-CopyString.robot'
-                    sh 'renode-test /home/renode/tests/platforms/STM32F103.robot'
-                    // sh 'renode-test /home/renode/tests/platforms/SiFive-FU540.robot'
+                    sh 'renode-test ASM-CopyString.robot -d outTest'
+                    // sh 'renode-test /home/renode/tests/platforms/STM32F103.robot'
                 }
                 // sh 'renode-test /home/renode/tests/platforms/STM32F103.robot'
+            }
+
+            always {
+                robot outputPath: 'Ex02-CopyString/outTest/'
             }
         }
         
