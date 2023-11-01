@@ -13,7 +13,7 @@ pipeline {
                 dir('Ex02-CopyString') {
                     sh 'mkdir -p outTest'
                     sh 'make'
-                    sh 'ls'
+                    // sh 'ls'
                     sh 'renode-test -d outTest ASM-CopyString.robot'
                     // sh 'renode-test /home/renode/tests/platforms/STM32F103.robot'
                 }
