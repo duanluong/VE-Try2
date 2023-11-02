@@ -33,21 +33,6 @@ Run CPU First (1)
 	Get All Register
     [Teardown]    Quit Machine
 
-Run CPU First (2)
-    [Setup]    Create Machine
-    Start Simulation
-    Run Steps    ${LENGTH_RUN}
-    Pause Simulation
-	Get All Register
-    [Teardown]    Quit Machine
-
-Run CPU First (3)
-    [Setup]    Create Machine
-    Start Simulation
-    Run Steps    ${LENGTH_RUN}
-    Pause Simulation
-	Get All Register
-    [Teardown]    Quit Machine
 
 Compare Result
 	[Setup]    Create Machine
