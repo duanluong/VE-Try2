@@ -30,7 +30,9 @@ pipeline {
 
     post {
         always {
-            sh 'ls'
+            dir('Ex02-CopyString') {
+                sh 'ls'
+            }
             //archiveArtifacts artifacts: 'Ex02-CopyString/Test/*', fingerprint: true
             robot outputPath: 'Ex02-CopyString/'
             echo 'End'
