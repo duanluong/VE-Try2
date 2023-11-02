@@ -18,12 +18,19 @@ Run CPU First
 	Get All Register
     [Teardown]    Quit Machine
 
-Compare Result
+Compare Result R3
 	[Setup]    Create Machine
     Start Simulation
     Run Steps    ${LENGTH_RUN}
     Pause Simulation
 	Register Should Be Equal  3  ${R3_VALUE}
+    [Teardown]    Quit Machine
+
+Compare Result R5
+	[Setup]    Create Machine
+    Start Simulation
+    Run Steps    ${LENGTH_RUN}
+    Pause Simulation
 	Register Should Be Equal  5  ${R5_VALUE}
     [Teardown]    Quit Machine
 
