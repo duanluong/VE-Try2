@@ -8,9 +8,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Hello from GCC'
-                sh 'arm-none-eabi-gcc -v'
                 dir('Ex02-CopyString') {
+                    sh 'arm-none-eabi-gcc -v'
                     sh 'make'
                 }
             }
