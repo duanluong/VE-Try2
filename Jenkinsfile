@@ -10,7 +10,6 @@ pipeline {
             steps {
                 echo 'Hello from GCC'
                 sh 'arm-none-eabi-gcc -v'
-                sh 'ls'
                 dir('Ex02-CopyString') {
                     sh 'make'
                 }
@@ -20,6 +19,7 @@ pipeline {
         stage('Testing') {
             steps {
                 dir('Ex02-CopyString') {
+                    sh 'ls'
                     sh 'mkdir -p outTest'
                     sh 'renode-test -d outTest ASM-CopyString.robot'
                 }
