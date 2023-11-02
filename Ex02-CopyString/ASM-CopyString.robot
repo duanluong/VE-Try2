@@ -24,3 +24,27 @@ Compare Result
     Pause Simulation
 	Register Should Be Equal  3  ${R3_VALUE}
     [Teardown]    Quit Machine
+
+Run CPU First (1)
+    [Setup]    Create Machine
+    Start Simulation
+    Run Steps    ${LENGTH_RUN}
+    Pause Simulation
+	Get All Register
+    [Teardown]    Quit Machine
+
+Run CPU First (2)
+    [Setup]    Create Machine
+    Start Simulation
+    Run Steps    ${LENGTH_RUN}
+    Pause Simulation
+	Get All Register
+    [Teardown]    Quit Machine
+
+Run CPU First (3)
+    [Setup]    Create Machine
+    Start Simulation
+    Run Steps    ${LENGTH_RUN}
+    Pause Simulation
+	Get All Register
+    [Teardown]    Quit Machine
