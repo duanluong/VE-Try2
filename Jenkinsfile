@@ -32,7 +32,8 @@ pipeline {
         always {
             dir('Ex02-CopyString') {
                 sh 'ls -l'
-                robot outputFileName: 'robot_output.xml'
+                robot outputPath: '.'
+                // robot outputFileName: 'robot_output.xml'
             }
             //archiveArtifacts artifacts: 'Ex02-CopyString/Test/*', fingerprint: true
             
