@@ -18,6 +18,7 @@ Run CPU First
     [Teardown]    Quit Machine
 
 Compare Result
+	Set Test Metadata    Example Test Case    tags    Critical
 	[Setup]    Create Machine
     Start Simulation
     Run Steps    ${LENGTH_RUN}
