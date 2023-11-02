@@ -12,15 +12,20 @@ pipeline {
                 sh 'arm-none-eabi-gcc -v'
                 sh 'ls'
                 dir('Ex02-CopyString') {
-                    sh 'mkdir -p outTest'
                     sh 'make'
-                    // sh 'ls'
-                    sh 'renode-test -d outTest ASM-CopyString.robot'
-                    sh 'renode-test /home/renode/tests/platforms/STM32F103.robot'
                 }
             }
         }
         
+        stage('Testing') {
+            steps {
+                dir('Ex02-CopyString') {
+                    sh 'mkdir -p outTest'
+                    sh 'renode-test -d outTest ASM-CopyString.robot'
+                }
+            }
+        }
+
         stage('End') {
             steps {
                 echo 'Goodbye, Jenkins!'
@@ -33,10 +38,8 @@ pipeline {
             dir('Ex02-CopyString') {
                 sh 'ls -l'
                 robot outputPath: '.', outputFileName: 'robot_output.xml'
-                // robot outputFileName: 'robot_output.xml'
-                archiveArtifacts artifacts: 'robot_output.xml', fingerprint: true
+                archiveArtifacts artifacts: 'robot_output.xml', fingerprint: false
             }
-            echo 'End'
         }
     }
 }
