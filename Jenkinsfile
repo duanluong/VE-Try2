@@ -34,9 +34,8 @@ pipeline {
                 sh 'ls -l'
                 robot outputPath: '.', outputFileName: 'robot_output.xml'
                 // robot outputFileName: 'robot_output.xml'
+                archiveArtifacts artifacts: 'Ex02-CopyString/robot_output.xml', fingerprint: true
             }
-            //archiveArtifacts artifacts: 'Ex02-CopyString/Test/*', fingerprint: true
-            
             echo 'End'
         }
     }
