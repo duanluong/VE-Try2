@@ -7,6 +7,7 @@ ${MACHINE}        @platforms/cpus/stm32f103.repl
 ${FIRMWARE}       @${CURDIR}/main.elf
 ${LENGTH_RUN}     50
 ${R3_VALUE}       0x99999999
+${R5_VALUE}       0x7530ECA9
 
 *** Test Cases ***
 Run CPU First
@@ -23,6 +24,7 @@ Compare Result
     Run Steps    ${LENGTH_RUN}
     Pause Simulation
 	Register Should Be Equal  3  ${R3_VALUE}
+	Register Should Be Equal  5  ${R5_VALUE}
     [Teardown]    Quit Machine
 
 Run CPU First (1)
