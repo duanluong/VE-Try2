@@ -1,8 +1,8 @@
 pipeline {
     agent {
         docker {
-            image 'luckycometdaft/emcigccarm:v3'
-            args '--user ContainerUser'
+            image 'luckycometdaft/emcigccarm:v4'
+            args '--user duanlc'
         }
     }
     stages {
